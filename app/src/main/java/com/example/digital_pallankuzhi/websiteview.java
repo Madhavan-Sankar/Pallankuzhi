@@ -84,6 +84,7 @@ public class websiteview extends AppCompatActivity{
         webView.setScrollbarFadingEnabled(false);
         webView.loadUrl("https://pallankuli.000webhostapp.com/index.php?room_id="+roomid+"&dev="+value);
         webView.setWebViewClient(new WebViewClient());
+
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {

@@ -110,4 +110,9 @@ public class leaderboard extends AppCompatActivity {
             return row;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

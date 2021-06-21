@@ -4,13 +4,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     String ipaddress;
     EditText name;
-    Button create,join;
+    Button create,join,leaderboard,htp;
+    TextView team;
     String roomid;
     ProgressBar progressBar;
     private static long back_pressed;
@@ -50,6 +57,77 @@ public class MainActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         create = findViewById(R.id.create);
         join = findViewById(R.id.join);
+        leaderboard=findViewById(R.id.leaderboard);
+        team=findViewById(R.id.team);
+        htp=findViewById(R.id.htp);
+        SpannableString content1 = new SpannableString( "TEAM" ) ;
+        content1.setSpan( new UnderlineSpan() , 0 , content1.length() , 0 ) ;
+        team.setText(content1) ;
+        team.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final android.app.AlertDialog.Builder alertDialog3 = new android.app.AlertDialog.Builder(MainActivity.this);
+                LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+                View v = inflater.inflate(R.layout.creators, null);  // this line
+                alertDialog3.setView(v);
+                final android.app.AlertDialog alertDialog = alertDialog3.create();
+                alertDialog.show();
+                final ImageView back = v.findViewById(R.id.back);
+                final ImageButton lnhk=v.findViewById(R.id.lnhk);
+                final ImageButton lnbm=v.findViewById(R.id.lnbm);
+                final ImageButton lnar=v.findViewById(R.id.lnar);
+                final ImageButton lnkm=v.findViewById(R.id.lnkm);
+                back.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+                lnhk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        gotoUrl("http://www.linkedin.com/in/harikrishna-m");
+                    }
+                });
+                lnbm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        gotoUrl("http://www.linkedin.com/in/madhavan-sankar");
+                    }
+                });
+                lnar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        gotoUrl("http://www.linkedin.com/in/aravindh24/");
+                    }
+                });
+                lnkm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        gotoUrl("http://www.linkedin.com/in/kumaresan-r-5975bb151");
+                    }
+                });
+
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+                layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                alertDialog.getWindow().setAttributes(layoutParams);
+            }
+        });
+        leaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,leaderboard.class);
+                startActivity(intent);
+            }
+        });
+        htp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         progressBar=findViewById(R.id.progress);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +179,10 @@ public class MainActivity extends AppCompatActivity {
                                         share.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
+                                                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                                ClipData clip = ClipData.newPlainText("ROOM ID", roomid);
+                                                Toast.makeText(MainActivity.this, "Copied to Clipboard", LENGTH_SHORT).show();
+                                                clipboard.setPrimaryClip(clip);
                                                 Intent sendIntent = new Intent();
                                                 sendIntent.setAction(Intent.ACTION_SEND);
                                                 sendIntent.putExtra(Intent.EXTRA_TEXT, "Welcome to Digital Pallankuzhi\nYour room id is : ");
@@ -278,4 +360,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void gotoUrl(String s)
+    {
+        Uri uri = Uri.parse(s);
+        startActivity(new Intent(Intent.ACTION_VIEW,uri));
+    }
 }

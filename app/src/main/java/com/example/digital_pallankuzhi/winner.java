@@ -45,13 +45,13 @@ public class winner extends AppCompatActivity {
         winner=findViewById(R.id.winner);
         statuswin=findViewById(R.id.statuswin);
         if(end==1) {
-            winner.setText(player1);
+            winner.setText(player1.toUpperCase());
             win=player1;
             if(value==1)
                 writewinner();
         }
         else if(end==2) {
-            winner.setText(player2);
+            winner.setText(player2.toUpperCase());
             win = player2;
             if(value==2)
                 writewinner();
